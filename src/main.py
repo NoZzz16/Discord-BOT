@@ -66,5 +66,5 @@ async def ban(ctx, member: discord.Member) :
 async def pong(ctx):
     await ctx.send('pong')
 
-token = "MTAyMjE5MzE0NzU3ODY5MTYxNA.GhWdcX.QW6DFFvitUokdxsN17s2lyRm_RfMInipbjnY3A"
+token = ""
 bot.run(token)  # Starts the bot
