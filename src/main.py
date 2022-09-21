@@ -37,12 +37,12 @@ async def on_message(message):
         await message.channel.send(f"Salut tout seul {user}")
     await bot.process_commands(message)
 
-@bot.command(pass_context=True) #Give a role to a member
+@bot.command(pass_context=True) #Give a role to a member (Utility fonction for !admin feature)
 async def giverole(ctx, user: discord.Member, role: discord.Role):
     await user.add_roles(role)
     await ctx.send(f"hey {ctx.author.name}, {user.name} made u a : {role.name}")
 
-@bot.command(pass_context=True) #Create the "Admin" role, with all permissions allowed
+@bot.command(pass_context=True) #Create the "Admin" role, with all permissions allowed (Utility fonction for !admin feature)
 async def create_role(ctx):
 	guild = ctx.guild
 	await guild.create_role(name="Admin", permissions=Permissions.all())
@@ -66,5 +66,5 @@ async def ban(ctx, member: discord.Member) :
 async def pong(ctx):
     await ctx.send('pong')
 
-token = ""
+token = "MTAyMjE5MzE0NzU3ODY5MTYxNA.GhWdcX.QW6DFFvitUokdxsN17s2lyRm_RfMInipbjnY3A"
 bot.run(token)  # Starts the bot
