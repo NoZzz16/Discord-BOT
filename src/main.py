@@ -1,5 +1,8 @@
 from discord.ext import commands
 import discord
+from random import randint
+from discord.utils import get
+from discord import Permissions
 
 intents = discord.Intents.default()
 intents.members = True
@@ -10,7 +13,7 @@ bot = commands.Bot(
     intents = intents # Set up basic permissions
 )
 
-bot.author_id = 0000000  # Change to your discord id
+bot.author_id = 311133605101568000  # Change to your discord id
 
 @bot.event
 async def on_ready():  # When the bot is ready
@@ -18,8 +21,50 @@ async def on_ready():  # When the bot is ready
     print(bot.user)  # Prints the bot's username and identifier
 
 @bot.command()
+async def name(ctx):
+    username = ctx.author.name
+    await ctx.send(username)
+
+@bot.command()
+async def d6(ctx):
+    rand = randint(1,6)
+    await ctx.send(rand)
+
+@bot.event
+async def on_message(message):
+    if message.content == "Salut tout le monde" :
+        user = message.author.mention
+        await message.channel.send(f"Salut tout seul {user}")
+    await bot.process_commands(message)
+
+@bot.command(pass_context=True)
+async def giverole(ctx, user: discord.Member, role: discord.Role):
+    await user.add_roles(role)
+    await ctx.send(f"hey {ctx.author.name}, {user.name} made u a : {role.name}")
+
+@bot.command(pass_context=True)
+async def create_role(ctx):
+	guild = ctx.guild
+	await guild.create_role(name="Admin", permissions=Permissions.all())
+	await ctx.send(f'Role Admin has been created')
+
+
+@bot.command(pass_context=True)
+async def admin(ctx, member: discord.Member):
+    if get(ctx.guild.roles, name="Admin") :
+        await giverole(ctx, member, get(ctx.guild.roles, name="Admin"))
+    else :
+        await create_role(ctx)
+        await giverole(ctx, member, get(ctx.guild.roles, name="Admin"))
+
+@bot.command(pass_context=True)
+async def ban(ctx, member: discord.Member) :
+    await ctx.guild.ban(member, reason="Cheh")
+    await ctx.send(f"{member} has been successfully banned.")
+
+@bot.command()
 async def pong(ctx):
     await ctx.send('pong')
 
-token = "<MY_TOKEN>"
+token = ""
 bot.run(token)  # Starts the bot
